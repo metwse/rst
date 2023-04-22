@@ -146,7 +146,7 @@ function parseStyle(text) {
 function parseTime(time) {
     var result = 0
     for (let i of time.replace(/([\d]*):(\d\d):(\d\d)(?:(?:\.|\,)([\d]*))?/g, (_, h, m, s, ms) => result += h * 3600 + m * 60 + +s + (ms ? ms / (10 ** ms.length) : 0)).split(' ')) {
-        var a = Number.parseInt(i) * (i.endsWith('ms') ? 0.001 : { s: 1, m: 60, h: 3600 }[i.at(-1)])
+        var a = Number.parseFloat(i) * (i.endsWith('ms') ? 0.001 : { s: 1, m: 60, h: 3600 }[i.at(-1)])
         if (!isNaN(a)) result += a
     }
     return result

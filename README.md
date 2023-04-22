@@ -1,4 +1,4 @@
-# RTS / ShotCut
+# RST / ShotCut
 Rich Subtitle (rst) library for ShotCut
 
 
