@@ -7,10 +7,12 @@ You can define styles with a CSS-like syntax
 * { 
     color: color;
     background: background;
+    padding: padding;
+    line-gap: line-gap;
     geometry: left top width height;
-    font: font-size font-family font-weight; 
+    font: font-style font-size font-family font-weight; 
     outline: outline-width outline-color;
-    align: vertical-align horizontal-align;
+    align: horizontal-align vertical-align;
 }
 
 metw { color: white; outline-color: red }
@@ -20,7 +22,7 @@ Subtitle example:
 ```html
 # 0s - 1s
 <metw>multi line
-subtitle</metw>
+subtitle</metw> coming soon 
 
 # 1s - 5000ms
 text with defaults
