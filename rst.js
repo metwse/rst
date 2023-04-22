@@ -33,7 +33,7 @@ const toTrack = (out, subtitles) => `
 const toMLT = (out, subtitles) => `
 <?xml version="1.0" standalone="no"?>
 <mlt LC_NUMERIC="C" version="6.25.0" title="Shotcut version 21.03.21" producer="main_bin">
-  <profile description="HD 1080p 25 fps" width="1920" height="1080" progressive="1" sample_aspect_num="1" sample_aspect_den="1" display_aspect_num="16" display_aspect_den="9" frame_rate_num="25" frame_rate_den="1" colorspace="709"/>
+  <profile description="HD 1080p 25 fps" width="1920" height="1080" progressive="1" sample_aspect_num="1" sample_aspect_den="1" display_aspect_num="16" display_aspect_den="9" frame_rate_num="33" frame_rate_den="1" colorspace="709"/>
   <playlist id="main_bin">
     <property name="xml_retain">1</property>
   </playlist>
@@ -116,7 +116,6 @@ const toSubtitle = (id, text, interval, style) => `
       <property name="shotcut:usePointSize">1</property>
       <property name="shotcut:animIn">00:00:00.000</property>
       <property name="shotcut:animOut">00:00:00.000</property>
-      <property name="shotcut:pointSize">${style.font.size}</property>
     </filter>
 `
 //}}}
@@ -247,7 +246,7 @@ function parse(text) {
             if (currentStyle.align.vertical == 'bottom') currentStyle.top -= pad.bottom, pad.bottom += currentStyle.font.size + currentStyle.lineGap
             else currentStyle.top += pad.top, pad.top -= currentStyle.font.size + currentStyle.lineGap
             
-            parased += toSubtitle(id, text, { in: toTimeString(time[0]), out: toTimeString(time[1] - 0.01) }, currentStyle)
+            parased += toSubtitle(id, text, { in: toTimeString(time[0]), out: toTimeString(time[1] - 0.03) }, currentStyle)
             currentStyle.top = oldTop; id++
         }
     }
