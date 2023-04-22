@@ -10,6 +10,26 @@ const defaultStyle = {
 
 
 //{{{ xml
+const toTrack = (out, subtitles) => `
+<?xml version="1.0" encoding="utf-8"?>
+<mlt LC_NUMERIC="C" version="7.13.0" root="" parent="producer0" in="00:00:00.000" out="${out}">
+	<producer id="producer0" in="00:00:00.000" out="00:00:30.000">
+		<property name="length">04:00:00.000</property>
+		<property name="eof">pause</property>
+		<property name="resource">#00000000</property>
+		<property name="aspect_ratio">1</property>
+		<property name="mlt_service">color</property>
+		<property name="mlt_image_format">rgb24a</property>
+		<property name="shotcut:caption">transparent</property>
+		<property name="shotcut:detail">transparent</property>
+		<property name="ignore_points">0</property>
+		<property name="global_feed">1</property>
+		<property name="xml">was here</property>
+		<property name="seekable">1</property>
+		${subtitles}
+	</producer>
+</mlt>`
+
 const toMLT = (out, subtitles) => `
 <?xml version="1.0" standalone="no"?>
 <mlt LC_NUMERIC="C" version="6.25.0" title="Shotcut version 21.03.21" producer="main_bin">
@@ -213,20 +233,26 @@ function parse(text) {
 
     var id = 0, parased = ''
     for (let [time, _subtitles] of subtitles) {
-        let pad  = { top: 0, bottom: 0 }
+        let pad  = { top: 0, bottom: 0 }, a
+        _subtitles.forEach(subtitle => {
+            const currentStyle = style[subtitle.match(/\@[\S]*/g)[0].substring(1)] ?? style['*']
+            if (currentStyle.align.vertical != 'top') return
+            if (a) pad.top += currentStyle.font.size + currentStyle.lineGap
+            else a = true
+        })
         for (let subtitle of _subtitles.reverse()) {
             var name, text = subtitle.replace(/^\@[\S]*\ /, _name => { name = _name.substring(1).trim(); return '' })
             const currentStyle = style[name] ?? style['*'], oldTop = currentStyle.top
             
-            if (currentStyle.align.vertical == 'bottom') currentStyle.top -= pad.bottom ? pad.bottom + currentStyle.lineGap : 0, pad.bottom += currentStyle.font.size
-            else currentStyle.top += pad.top ? pad.top + currentStyle.lineGap : 0, pad.top += currentStyle.font.size
+            if (currentStyle.align.vertical == 'bottom') currentStyle.top -= pad.bottom, pad.bottom += currentStyle.font.size + currentStyle.lineGap
+            else currentStyle.top += pad.top, pad.top -= currentStyle.font.size + currentStyle.lineGap
             
             parased += toSubtitle(id, text, { in: toTimeString(time[0]), out: toTimeString(time[1] - 0.04) }, currentStyle)
             currentStyle.top = oldTop; id++
         }
     }
 
-    return { mlt: toMLT(toTimeString(out), parased).trim(), length: subtitles.at(-1)[0][1] }
+    return { mlt: toMLT(toTimeString(out), parased).trim(), track: toTrack(toTimeString(out), parased).trim(), length: subtitles.at(-1)[0][1] }
 }
 
 
