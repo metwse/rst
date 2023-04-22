@@ -25,3 +25,9 @@ main h1 { text-align: center; font-size: 1.5em; font-weight: 400 }
 .select-file button { display: flex; padding: 1em; width: 100%; color: var(--bg-1); background: var(--bg-b-disabled); flex-direction: column; align-items: center; gap: 1em }
 .select-file button svg { color: var(--bg-b); width: 3em; height: 3em }
 .select-file .file { display: flex; align-items: center; gap: .5em}
+
+
+
+.github a { display: flex; margin: auto; padding: .6em 2em; width: fit-content; font-size: .9em; align-items: center; gap: .5em; text-decoration: none }
+.github a:hover { text-decoration: underline }
+.github a svg { width: 1.5em; height: 1.5em }

@@ -178,18 +178,28 @@ function mergeDeep(target, ...sources) {
 
 
 function parse(text) {
-    var style = '', subtitles = [['', []]], a = false, b = -1, out = 0
+    var style = '', subtitles = [['', []]], out = 0
+
+    let styleLines = true, subtitleId = false
+
     text.split('\n').forEach(line => {
-        if (!a && line.startsWith('---')) { a = true; return }
-        if (!a) style += line + '\n'
+        if (styleLines) { 
+            if (line.startsWith('---')) return styleLines = false
+            style += line + '\n'
+        }
         else { 
-            if (b == -1) {
-                if (line[0] == '#') b = 0
+            if (subtitleId === false) {
+                if (line[0] == '#') subtitleId = 0
                 else return 
             }
-            if (line == '' && subtitles[b][0]) { subtitles.push([false, []]); b++ }
-            else line[0] == '#' ? (subtitles[b][0] = line.substring(1).split('-').map(v => parseTime(v))) : subtitles[b][1].push(line)         
-            if (subtitles[b][0][1] > out) out = subtitles[b][0][1]
+            if (line == '' && subtitles[subtitleId][0]) { subtitles.push([false, []]); subtitleId++ }
+            else {
+                if (line[0] == '#') { 
+                    subtitles[subtitleId][0] = line.substring(1).split('-').map(v => parseTime(v))
+                    if (subtitles[subtitleId][0][1] > out) out = subtitles[subtitleId][0][1]
+                }
+                else subtitles[subtitleId][1].push(line)
+            }
         }
     })
     if (!subtitles.at(-1)[0]) subtitles.pop()
@@ -203,14 +213,16 @@ function parse(text) {
 
     var id = 0, parased = ''
     for (let [time, _subtitles] of subtitles) {
-        let a = 0
-        for (let subtitle of _subtitles) {
-            var name, text = subtitle.replace(/^\@[\w\d]*\ /, n => { name = n.substring(1).trim(); return '' }),
-                currentStyle = style[name] ?? style['*'], top = currentStyle.top
-            currentStyle.top -= a ? a + currentStyle.lineGap : 0
+        let pad  = { top: 0, bottom: 0 }
+        for (let subtitle of _subtitles.reverse()) {
+            var name, text = subtitle.replace(/^\@[\S]*\ /, _name => { name = _name.substring(1).trim(); return '' })
+            const currentStyle = style[name] ?? style['*'], oldTop = currentStyle.top
+            
+            if (currentStyle.align.vertical == 'bottom') currentStyle.top -= pad.bottom ? pad.bottom + currentStyle.lineGap : 0, pad.bottom += currentStyle.font.size
+            else currentStyle.top += pad.top ? pad.top + currentStyle.lineGap : 0, pad.top += currentStyle.font.size
+            
             parased += toSubtitle(id, text, { in: toTimeString(time[0]), out: toTimeString(time[1] - 0.04) }, currentStyle)
-            currentStyle.top = top
-            a += currentStyle.font.size; id++
+            currentStyle.top = oldTop; id++
         }
     }
 
