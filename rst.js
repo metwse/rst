@@ -13,7 +13,7 @@ const defaultStyle = {
 const toTrack = (out, subtitles) => `
 <?xml version="1.0" encoding="utf-8"?>
 <mlt LC_NUMERIC="C" version="7.13.0" root="" parent="producer0" in="00:00:00.000" out="${out}">
-	<producer id="producer0" in="00:00:00.000" out="00:00:30.000">
+	<producer id="producer0" in="00:00:00.000" out="${out}">
 		<property name="length">04:00:00.000</property>
 		<property name="eof">pause</property>
 		<property name="resource">#00000000</property>
