@@ -14,7 +14,7 @@ button:disabled { background: var(--bg-b-disabled); color: var(--color-disabled)
 button:hover { cursor: pointer }
 button:disabled:hover { cursor: not-allowed }
 
-body { color: var(--color); background: var(--bg-1); font-family: var(--font-family) }
+body { color: var(--color); margin: 0; background: var(--bg-1); font-family: var(--font-family) }
 main { display: flex; margin: auto; padding: 1em; width: min(500px, 100vw); gap: 2em; flex-direction: column }
 main h1 { text-align: center; font-size: 1.5em; font-weight: 400 }
 .section { display: flex; gap: .5em; flex-direction: column }

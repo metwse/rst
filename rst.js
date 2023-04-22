@@ -96,7 +96,7 @@ const toSubtitle = (id, text, interval, style) => `
       <property name="shotcut:usePointSize">1</property>
       <property name="shotcut:animIn">00:00:00.000</property>
       <property name="shotcut:animOut">00:00:00.000</property>
-      <property name="shotcut:pointSize">24</property>
+      <property name="shotcut:pointSize">${style.font.size}</property>
     </filter>
 `
 //}}}

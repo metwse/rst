@@ -26,7 +26,7 @@ var _rst, _mlt
 
 select.upload.ondrop = e => (e.preventDefault(), setFile(e.dataTransfer.files[0]))
 select.upload.ondragover = e => e.preventDefault()
-select.upload.onclick = () => select.input.click()
+select.upload.onclick = () => { select.input.value = null, select.input.click() }
 select.input.oninput = () => { setFile(select.input.files[0]) }
 
 run.button.onclick = () => {
