@@ -235,7 +235,7 @@ function parse(text) {
     for (let [time, _subtitles] of subtitles) {
         let pad  = { top: 0, bottom: 0 }, a
         _subtitles.forEach(subtitle => {
-            const currentStyle = style[subtitle.match(/\@[\S]*/g)[0].substring(1)] ?? style['*']
+            const currentStyle = style[subtitle.match(/\@[\S]*/g)?.[0]?.substring(1)] ?? style['*']
             if (currentStyle.align.vertical != 'top') return
             if (a) pad.top += currentStyle.font.size + currentStyle.lineGap
             else a = true
