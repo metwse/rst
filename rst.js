@@ -247,7 +247,7 @@ function parse(text) {
             if (currentStyle.align.vertical == 'bottom') currentStyle.top -= pad.bottom, pad.bottom += currentStyle.font.size + currentStyle.lineGap
             else currentStyle.top += pad.top, pad.top -= currentStyle.font.size + currentStyle.lineGap
             
-            parased += toSubtitle(id, text, { in: toTimeString(time[0]), out: toTimeString(time[1] - 0.04) }, currentStyle)
+            parased += toSubtitle(id, text, { in: toTimeString(time[0]), out: toTimeString(time[1] - 0.01) }, currentStyle)
             currentStyle.top = oldTop; id++
         }
     }
